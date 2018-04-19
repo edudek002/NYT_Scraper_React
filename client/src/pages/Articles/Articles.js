@@ -63,7 +63,7 @@ class Articles extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-6">
+          <Col size="md-8">
             <Jumbotron>
               <h1>Enter Articles Name</h1>
             </Jumbotron>
@@ -106,7 +106,7 @@ class Articles extends Component {
               </FormBtn>
             </form>
           </Col>
-          <Col size="md-6 sm-12">
+          <Col size="md-8 sm-12">
             <Jumbotron>
               <h1>My saved articles</h1>
             </Jumbotron>
