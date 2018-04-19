@@ -11,8 +11,11 @@ class Articles extends Component {
   state = {
     articles: [],
     title: "",
-    author: "",
+    beginningYear: "",
+    endingYear: "",
+    url: "",
     synopsis: ""
+    
   };
 
   componentDidMount() {
@@ -22,7 +25,8 @@ class Articles extends Component {
   loadArticles = () => {
     API.getArticles()
       .then(res =>
-        this.setState({ articles: res.data, title: "", author: "", synopsis: "" })
+        this.setState({ articles: res.data, title: "",beginningYear: "",
+        endingYear: "", url: "", synopsis: "",  })
       )
       .catch(err => console.log(err));
   };
@@ -42,10 +46,12 @@ class Articles extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
+    if (this.state.title) {
       API.saveArticle({
         title: this.state.title,
-        author: this.state.author,
+        beginningYear: this.state.beginningYear,
+        endingYear: this.state.endingYear,
+        url: this.state.url,
         synopsis: this.state.synopsis
       })
         .then(res => this.loadArticles())
@@ -59,7 +65,7 @@ class Articles extends Component {
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>What Articles Should I Read?</h1>
+              <h1>Enter Articles Name</h1>
             </Jumbotron>
             <form>
               <Input
@@ -69,10 +75,22 @@ class Articles extends Component {
                 placeholder="Title (required)"
               />
               <Input
-                value={this.state.author}
+                value={this.state.beginningYear}
                 onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
+                name="beginningYear"
+                placeholder="Start Year (required)"
+              />
+              <Input
+                value={this.state.endingYear}
+                onChange={this.handleInputChange}
+                name="endingYear"
+                placeholder="End Year (required)"
+              />
+              <Input
+                value={this.state.url}
+                onChange={this.handleInputChange}
+                name="url"
+                placeholder="URL (required)"
               />
               <TextArea
                 value={this.state.synopsis}
@@ -81,7 +99,7 @@ class Articles extends Component {
                 placeholder="Synopsis (Optional)"
               />
               <FormBtn
-                disabled={!(this.state.author && this.state.title)}
+                disabled={!(this.state.title)}
                 onClick={this.handleFormSubmit}
               >
                 Submit Article
@@ -90,7 +108,7 @@ class Articles extends Component {
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Books On My List</h1>
+              <h1>My saved articles</h1>
             </Jumbotron>
             {this.state.articles.length ? (
               <List>
@@ -98,7 +116,7 @@ class Articles extends Component {
                   <ListItem key={article._id}>
                     <Link to={"/articles/" + article._id}>
                       <strong>
-                        {article.title} by {article.author}
+                        {article.title} on this date {article.beginningYear}
                       </strong>
                     </Link>
                     <DeleteBtn onClick={() => this.deleteArticle(article._id)} />
