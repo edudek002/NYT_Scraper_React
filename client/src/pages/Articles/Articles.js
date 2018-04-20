@@ -30,10 +30,6 @@ class Articles extends Component {
         this.setState({ articles: res.data, title: "",beginningYear: "",
         endingYear: "", url: "", synopsis: "",  })
 
-        /*this.setState({ saved: res.data,
-          deleted: false
-           })*/
-
       )
       .catch(err => console.log("Error from loadArticles ", err));
   };
@@ -45,25 +41,15 @@ class Articles extends Component {
   };
 
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const name = event.target.name;
+    let value  = event.target.value;
+    // This grabs the first 4 characters in the field
+    if (name === "beginningYear" || name === "endingYear") {
+      value = value.substring(0, 4);
+    }
     this.setState({
       [name]: value
     });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title) {
-      API.saveArticle({
-        title: this.state.title,
-        beginningYear: this.state.beginningYear,
-        endingYear: this.state.endingYear,
-        url: this.state.url,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadArticles())
-        .catch(err => console.log(err));
-    }
   };
 
   validateDates = () => {
@@ -75,6 +61,30 @@ class Articles extends Component {
     else return true
   }
 
+  handleSearchSubmit = event => {
+    event.preventDefault();
+    let valid = this.validateDates();
+    if (valid) {
+        this.searchAPI();
+    }
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.title) {
+      API.saveArticle({
+        title: this.state.title,
+        beginningYear: this.state.beginningYear,
+        endingYear: this.state.endingYear,
+        url: this.state.url
+      })
+        .then(res => this.loadArticles())
+        .catch(err => console.log(err));
+    }
+  };
+
+  
+
   searchAPI = () => {
     let title = this.state.title;
     let beginningYear = this.state.beginningYear;
@@ -85,11 +95,10 @@ class Articles extends Component {
     "&end_date=" +  
     endingYear + "1231";
     console.log("query: " + query);
- 
-    API.search(query)
-      .then(res => {this.setState({results: res.data.response.docs})})
-      .catch(err => console.log(err));
- 
+    API.searchArticle(query)
+     .then(res => {this.setState({results: res.data.response.docs})})
+     .catch(err => console.log(err));
+
     this.setState({
       title: "",
       beginningYear: "",
@@ -129,21 +138,9 @@ class Articles extends Component {
                 name="endingYear"
                 placeholder="End Year (required)"
               />
-              <Input
-                value={this.state.url}
-                onChange={this.handleInputChange}
-                name="url"
-                placeholder="URL (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              />
               <FormBtn
                 disabled={!(this.state.title)}
-                onClick={this.handleFormSubmit}
+                onClick={this.handleSearchSubmit}
               >
                 Submit Article
               </FormBtn>
@@ -204,6 +201,8 @@ class Articles extends Component {
         <Row>
           <Col size="md-2">
           </Col>
+
+          
           <Col size="md-8 sm-12">
             <Jumbotron>
               <h1>Saved articles</h1>
@@ -234,4 +233,5 @@ class Articles extends Component {
 }
 
 export default Articles;
+
 

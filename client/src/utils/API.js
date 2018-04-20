@@ -21,8 +21,9 @@ export default {
   saveArticle: function(articleData) {
     return axios.post("/api/articles", articleData);
   },
-  search: function(query){
-    console.log("full query" + baseURL + APIkey + query);
+  searchArticle: function(query){
+    console.log("My full query " + baseURL + APIkey + query);
     return axios.get(baseURL + APIkey + query);
   } 
+  
 };
