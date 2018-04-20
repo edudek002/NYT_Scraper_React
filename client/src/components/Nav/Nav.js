@@ -1,12 +1,11 @@
 import React from "react";
 
 const Nav = () => (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-secondary"
-  style={{ height: 120, paddingTop: 30, textAlign: "center", background: "lightblue" }}
+  <nav className="navbar navbar-expand-lg text-center navbar-dark bg-secondary"
+  style={{ height: 100, font: 30, textAlign: "center"}}
   >
-    <a className="navbar-brand" style={{ height: 120, paddingTop: 30, textAlign: "center", color: "black"}} href="/">
-      New York Times Articles
-    </a>
+    <h1 className="text-center"><strong><i className="fa fa-newspaper-o"></i> New York Times Search</strong></h1>
+    
   </nav>
 );
 
