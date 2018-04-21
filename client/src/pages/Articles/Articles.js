@@ -108,6 +108,7 @@ class Articles extends Component {
     console.log("query: " + query);
     API.searchArticle(query)
      .then(res => {this.setState({
+       
       title: res.data.response.docs[0].headline.main, 
       beginningYear: res.data.response.docs[0].pub_date,
       url: res.data.response.docs[0].web_url,
