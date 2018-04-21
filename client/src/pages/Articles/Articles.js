@@ -28,7 +28,7 @@ class Articles extends Component {
     API.getArticles()
       .then(res =>
         this.setState({ articles: res.data, title: "",beginningYear: "",
-        endingYear: "", url: "", synopsis: "",  })
+        endingYear: "", url: "", synopsis: ""})
 
       )
       .catch(err => console.log("Error from loadArticles ", err));
@@ -66,7 +66,17 @@ class Articles extends Component {
     let valid = this.validateDates();
     if (valid) {
         this.searchAPI();
-    }
+    };
+    /*if (this.state.title) {
+      API.saveArticle({
+        title: this.state.title,
+        beginningYear: this.state.beginningYear,
+        endingYear: this.state.endingYear,
+        url: this.state.url
+      })
+        .then(res => this.loadArticles())
+        .catch(err => console.log(err));
+    };*/
   };
 
   handleFormSubmit = event => {
@@ -76,7 +86,8 @@ class Articles extends Component {
         title: this.state.title,
         beginningYear: this.state.beginningYear,
         endingYear: this.state.endingYear,
-        url: this.state.url
+        url: this.state.url,
+        synopsis: this.state.synopsis
       })
         .then(res => this.loadArticles())
         .catch(err => console.log(err));
@@ -96,16 +107,40 @@ class Articles extends Component {
     endingYear + "1231";
     console.log("query: " + query);
     API.searchArticle(query)
-     .then(res => {this.setState({results: res.data.response.docs})})
+     .then(res => {this.setState({
+      title: res.data.response.docs[0].headline.main, 
+      beginningYear: res.data.response.docs[0].pub_date,
+      url: res.data.response.docs[0].web_url,
+      synopsis: res.data.response.docs[0].snippet})
+
+        //Return only the first 10 articles
+        /*for(var i=0; i<res.data.response.docs.length; i++){
+          
+          if(i==10){
+            break;
+          }
+          else {
+            // Push to results array
+            state.results.push(res.data.response.docs[i]);
+          }
+          console.log("My results" + results);
+        };*/
+      })  
      .catch(err => console.log(err));
 
     this.setState({
-      title: "",
-      beginningYear: "",
-      endingYear: ""
+      title: this.state.title,
+      beginningYear: this.state.beginningYear,
+      endingYear: "",
+      url: this.state.url,
+      synopsis: this.state.synopsis
     })
-    console.log("API+++++++++++++++++++++++");
+    console.log("My API =========================");
     console.log(this.state);
+    console.log("My title  " + this.state.title);
+    console.log("My year  " + this.state.beginningYear);
+    console.log("My url  " + this.state.url);
+    console.log("My synopsis  " + this.state.synopsis);
   };
 
 
@@ -117,14 +152,14 @@ class Articles extends Component {
           </Col>
           <Col size="md-8">
             <Jumbotron>
-              <h1>Enter Article Title</h1>
+              <h1>Enter Article's Topic</h1>
             </Jumbotron>
             <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
                 name="title"
-                placeholder="Title (required)"
+                placeholder="Topic (required)"
               />
               <Input
                 value={this.state.beginningYear}
@@ -149,37 +184,33 @@ class Articles extends Component {
           <Col size="md-2">
           </Col>
         </Row>
+        
+        
         <Row>
           <Col size="md-2">
           </Col>
           <Col size="md-8">
             <Jumbotron>
-              <h1>Results</h1>
+              <h1>Your Search Results</h1>
             </Jumbotron>
             <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
                 name="title"
-                placeholder="Title (required)"
+                placeholder="Title of the Article"
               />
               <Input
                 value={this.state.beginningYear}
                 onChange={this.handleInputChange}
                 name="beginningYear"
-                placeholder="Start Year (required)"
-              />
-              <Input
-                value={this.state.endingYear}
-                onChange={this.handleInputChange}
-                name="endingYear"
-                placeholder="End Year (required)"
+                placeholder="Publication date"
               />
               <Input
                 value={this.state.url}
                 onChange={this.handleInputChange}
                 name="url"
-                placeholder="URL (required)"
+                placeholder="Article URL"
               />
               <TextArea
                 value={this.state.synopsis}
@@ -191,21 +222,20 @@ class Articles extends Component {
                 disabled={!(this.state.title)}
                 onClick={this.handleFormSubmit}
               >
-                Submit Article
+                Save Article
               </FormBtn>
             </form>
           </Col>
           <Col size="md-2">
           </Col>
         </Row>
+
         <Row>
           <Col size="md-2">
           </Col>
-
-          
           <Col size="md-8 sm-12">
             <Jumbotron>
-              <h1>Saved articles</h1>
+              <h1>Your Saved Articles</h1>
             </Jumbotron>
             {this.state.articles.length ? (
               <List>

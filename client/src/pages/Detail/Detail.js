@@ -20,27 +20,38 @@ class Detail extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-12">
+          <Col size="md-2">
+          </Col>
+          <Col size="md-8">
             <Jumbotron>
-              <h1>
-                {this.state.article.title} link {this.state.article.url}
-              </h1>
+              <h2>
+                {this.state.article.title}
+              </h2>
             </Jumbotron>
+          </Col>
+          <Col size="md-2">
           </Col>
         </Row>
         <Row>
-          <Col size="md-10 md-offset-1">
+          <Col size="md-2">
+          </Col>
+          <Col size="md-8">
             <article>
-              <h1>Synopsis</h1>
-              <p>
+              <br></br>
+              <h3>Synopsis</h3>
+              <br></br>
+              <h5>
                 {this.state.article.synopsis}
-              </p>
+              </h5>
+              <br></br>
+              <p>Here is the link to the article</p>
+              <a href="{this.state.article.url}">{this.state.article.url}</a>
             </article>
           </Col>
         </Row>
         <Row>
           <Col size="md-2">
-            <Link to="/">← Back to Authors</Link>
+            <Link to="/">← Back to Articles</Link>
           </Col>
         </Row>
       </Container>
