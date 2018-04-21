@@ -45,7 +45,7 @@ class Detail extends Component {
               </h5>
               <br></br>
               <p>Here is the link to the article</p>
-              <a href="{this.state.article.url}">{this.state.article.url}</a>
+              <a href={this.state.article.url}>{this.state.article.url}</a>
             </article>
           </Col>
         </Row>

@@ -107,8 +107,10 @@ class Articles extends Component {
     endingYear + "1231";
     console.log("query: " + query);
     API.searchArticle(query)
-     .then(res => {this.setState({
-       
+     .then(res => {
+      console.log("My res is ", res)
+      this.setState({
+      
       title: res.data.response.docs[0].headline.main, 
       beginningYear: res.data.response.docs[0].pub_date,
       url: res.data.response.docs[0].web_url,
