@@ -79,15 +79,15 @@ class Articles extends Component {
     };*/
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title) {
+  handleFormSubmit = article => {
+    console.log("inside handleformSubmit", article);
+    if (article.title) {
       API.saveArticle({
-        title: this.state.title,
-        beginningYear: this.state.beginningYear,
-        endingYear: this.state.endingYear,
-        url: this.state.url,
-        synopsis: this.state.synopsis
+        title: article.title,
+        beginningYear: article.beginningYear,
+        endingYear: article.endingYear,
+        url: article.url,
+        synopsis: article.synopsis
       })
         .then(res => this.loadArticles())
         .catch(err => console.log(err));
@@ -109,12 +109,17 @@ class Articles extends Component {
     API.searchArticle(query)
      .then(res => {
       console.log("My res is ", res)
-      this.setState({
+      this.setState({results: res.data.response.docs},() => {
+        console.log('my state after setting results', this.state)
+      }) 
+      
+      
+      {/*this.setState({
       
       title: res.data.response.docs[0].headline.main, 
       beginningYear: res.data.response.docs[0].pub_date,
       url: res.data.response.docs[0].web_url,
-      synopsis: res.data.response.docs[0].snippet})
+      synopsis: res.data.response.docs[0].snippet})*/}
 
         //Return only the first 10 articles
         /*for(var i=0; i<res.data.response.docs.length; i++){
@@ -158,6 +163,9 @@ class Articles extends Component {
               <h1>Enter Article's Topic</h1>
             </Jumbotron>
             <form>
+
+              
+   
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
@@ -196,38 +204,52 @@ class Articles extends Component {
             <Jumbotron>
               <h1>Your Search Results</h1>
             </Jumbotron>
-            <form>
+            {this.state.results.map(result => {
+              
+
+            const article = {
+              title: result.headline.main,
+              beginningYear: result.pub_date,
+              endingYear: null,
+              url: result.web_url,
+              synopsis: result.snippet
+            }
+            return <form key={result._id}>
+
               <Input
-                value={this.state.title}
+                value={result.headline.main}
                 onChange={this.handleInputChange}
                 name="title"
                 placeholder="Title of the Article"
               />
               <Input
-                value={this.state.beginningYear}
+                value={result.pub_date}
                 onChange={this.handleInputChange}
                 name="beginningYear"
                 placeholder="Publication date"
               />
               <Input
-                value={this.state.url}
+                
+                value={result.web_url}
                 onChange={this.handleInputChange}
                 name="url"
                 placeholder="Article URL"
               />
               <TextArea
-                value={this.state.synopsis}
+                value={result.snippet}
                 onChange={this.handleInputChange}
                 name="synopsis"
-                placeholder="Synopsis (Optional)"
+                placeholder="Synopsis"
               />
               <FormBtn
-                disabled={!(this.state.title)}
-                onClick={this.handleFormSubmit}
+                //disabled={!(this.state.title)}
+                disabled = {false}
+                onClick={(e) => this.handleFormSubmit(article)}
               >
                 Save Article
               </FormBtn>
             </form>
+            })}
           </Col>
           <Col size="md-2">
           </Col>
