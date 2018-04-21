@@ -30,17 +30,18 @@ Your app should be running on <http://localhost:3000>. The Express server should
 
 
 
-## Screenshots
-#### Users can submit a topic, start year, and end year to query the New York Times
-![Query Articles](/screenshots/query_articles.png)
+## User Flow
 
-#### Users can save the topic they like
-![Save Articles](/screenshots/save_articles.png)
+#### 1. Users can submit a topic, start year, and end year to query the New York Times
+![Query Articles](./screenshots/query_articles.png)
 
-#### Users can delete the topic or press on a topic to get URL
-![Remove articles](/screenshots/remove_article.png)
+#### 2. Users can save the topic they like
+![Save Articles](./screenshots/save_articles.png)
+
+#### 3. Users can delete the topic or press on a topic to get URL
+![Remove articles](./screenshots/remove_articles.png)
 
 
-#### Users can get article's URL
-![Get URL](/screenshots/get_url.png)
+#### 4. Users can get article's URL
+![Get URL](./screenshots/get_url.png)
 
